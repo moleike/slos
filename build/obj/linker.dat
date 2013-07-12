@@ -1,0 +1,81 @@
+/* a list of files to be linked */
+
+INPUT( start.o
+       undef.o
+       swi.o
+       swiapi.o
+       prefetch.o
+       data.o
+       reserved.o
+       irq.o
+       fiq.o
+       scheduler.o
+       mmu.o
+       util.o
+       async.o
+       swi_handler.o
+       bringup.o
+       cpsr.o
+       irq_handler.o
+       events_init.o
+       tick_service.o
+       ddf_io.o
+       led_driver.o
+       serial_driver.o
+       cinit.o
+       uid.o
+       jump.o
+       init.o
+       mmupcb.o
+       sal.o
+       )
+
+OUTPUT("mmuslos.elf")
+
+
+ENTRY(_start)
+
+MEMORY
+{
+  SRAM   : o = 0, l = 0x80000
+}
+
+SECTIONS
+{
+  .start :
+  {
+    __start_start = .;
+    *(.start);
+    __start_end = .;
+  } > SRAM
+
+  .text :
+  {
+     __text_start = .;
+     *(.text)
+     *(strings)
+     __text_end = .;
+  } > SRAM
+
+  .bss :
+  {
+     __bss_start = .;
+     *(.text)
+     *(strings)
+     __bss_end = .;
+  } > SRAM
+
+  .rodata :
+  {
+     __rodata_start = .;
+     *(.rodata)
+     __rodata_end = .;
+  } > SRAM
+
+  .data :
+  {
+     __data_start = .;
+     *(.data)
+     __data_end = .;
+  } > SRAM
+}

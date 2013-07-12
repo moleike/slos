@@ -1,0 +1,56 @@
+INPUT( start.o 
+       led.o
+       swiapi.o
+       startx.o
+     )
+
+OUTPUT("task2.elf")
+
+
+ENTRY(_start)
+
+MEMORY
+{
+  SRAM   : o = 0x400000, l = 0x8000
+}
+
+
+SECTIONS
+{
+  .start :
+  {
+    __start_start = .;
+    *(.start);
+    __start_end = .;
+  } > SRAM
+
+  .text :
+  {
+     __text_start = .;
+     *(.text)
+     *(strings)
+     __text_end = .;
+  } > SRAM
+
+  .bss :
+  {
+     __bss_start = .;
+     *(.text)
+     *(strings)
+     __bss_end = .;
+  } > SRAM
+
+  .rodata :
+  {
+     __rodata_start = .;
+     *(.rodata)
+     __rodata_end = .;
+  } > SRAM
+
+  .data :
+  {
+     __data_start = .;
+     *(.data)
+     __data_end = .;
+  } > SRAM
+}
